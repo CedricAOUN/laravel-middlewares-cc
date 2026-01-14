@@ -13,6 +13,16 @@ class ProductPolicy
     {
         //
     }
+
+    public function before(User $user): ?bool
+    {
+        if ($user->hasRole('admin')) {
+            return true;
+        }
+
+        return null;
+    }
+
     public function index(): bool
     {
         return true;
