@@ -9,9 +9,11 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
+                    @can('create', App\Models\Product::class)
                     <a href="{{ route('products.create') }}" class="text-blue-600 underline">
                         Créer un produit
                     </a>
+                    @endcan
 
                     <ul class="mt-4 space-y-2">
                         @foreach ($products as $product)
@@ -20,21 +22,21 @@
                             — {{ $product->price }} €
                             — {{ $product->is_public ? 'Public' : 'Privé' }}
                             <br />
-                            @can('view-product', $product)
+                            @can('view', $product)
                             <a href="{{ route('products.show', $product) }}" class="ml-2 text-blue-600 underline">
                                 Voir
                             </a>
                             @endcan
                             <br />
                             {{-- Modifier --}}
-                            @can('manage-product', $product)
+                            @can('update', $product)
                             <a href="{{ route('products.edit', $product) }}" class="ml-2 text-green-600 underline">
                                 Modifier
                             </a>
                             @endcan
 
                             {{-- Supprimer --}}
-                            @can('manage-product', $product)
+                            @can('delete', $product)
                             <form action="{{ route('products.destroy', $product) }}" method="POST" class="inline">
                                 @csrf
                                 @method('DELETE')

@@ -13,6 +13,7 @@ class ProductController extends Controller
      */
     public function index()
     {
+        Gate::authorize('index', Product::class);
         $products = Product::with('user')->get();
 
         return view('products.index', compact('products'));
@@ -23,6 +24,7 @@ class ProductController extends Controller
      */
     public function create()
     {
+        Gate::authorize('create', Product::class);
         return view('products.create');
     }
 
@@ -55,7 +57,7 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        Gate::authorize('view-product', $product);
+        Gate::authorize('view', $product);
         return view('products.show', compact('product'));
     }
 
@@ -64,7 +66,7 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        Gate::authorize('manage-product', $product);
+        Gate::authorize('update', $product);
         return view('products.edit', compact('product'));
     }
 
@@ -73,7 +75,7 @@ class ProductController extends Controller
      */
     public function update(Request $request,  Product $product)
     {
-        Gate::authorize('manage-product', $product);
+        Gate::authorize('update', $product);
         $validated = $request->validate([
             'name'  => ['required', 'string', 'max:255'],
             'price' => ['required', 'numeric', 'min:0'],
@@ -95,7 +97,7 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        Gate::authorize('manage-product', $product);
+        Gate::authorize('delete', $product);
         $product->delete();
 
         return redirect()
